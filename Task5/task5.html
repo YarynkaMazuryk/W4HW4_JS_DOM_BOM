@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8 />
+    <title>JS DOM </title>
+    <style>
+        #wrapper {
+            margin: 0 auto;
+            background: rgb(255, 205, 205);
+            width: 1000px;
+        }
+
+        nav {
+            text-align: center;
+            font-size: 20px;
+        }
+
+        nav a {
+            margin: 10px;
+        }
+
+        .active {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <nav>
+            <a href="main">Main</a>
+            <a href="about">About</a>
+            <a href="download">Download</a>
+        </nav>
+        <section class="content"></section>
+    </div>
+    <script>    
+        const contentEL = document.querySelector('.content');
+        const navEl = document.querySelector('nav');
+        const links = {
+            main: '<div>This is the <strong>main</strong> page <p>Lorem Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec</p></div>',
+            about: '<div>This is the <strong>about</strong> page <p>Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue</p></div>',
+            download: '<div>This is the <strong>download</strong> page <p> Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus Maecenas nec odio et ante tincidunt tempus</p> </div>'
+        }
+
+        function updateState(state) {
+            if (!state) return;
+            contentEL.innerHTML = links[state.page];
+            updateButtons(state);
+        };
+        function updateButtons(state) {
+            let res = navEl.querySelectorAll('a');
+            res.forEach(function (el) {
+                    const classList = el.classList;
+                    state.page === el.getAttribute('href')
+                        ? classList.add('active')
+                        : classList.remove('active');
+
+                })
+        };
+        window.addEventListener('popstate', function (e) {
+            updateState(e.state);
+        });
+        navEl.addEventListener('click', function (e) {
+            if (e.target.tagName !== 'A') return;
+            state = { page: e.target.getAttribute('href') };
+            history.pushState(state, '', state.page);
+            updateState(state);
+            e.preventDefault();
+        });
+    </script>
+</body>
+
+</html>
