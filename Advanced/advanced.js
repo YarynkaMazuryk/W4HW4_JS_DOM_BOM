@@ -47,7 +47,14 @@ function next() {
     window.location.hash = attribute;
     setNewLocalstorage(attribute);    
 }
+function changeElementByHash () {
+    let hash = location.hash.slice(1);
+    setImg(hash);
+}
 localStorageCheck ();
 button_prev.addEventListener('click', previous);
 button_next.addEventListener('click', next);
+window.addEventListener('hashchange',changeElementByHash);
+window.addEventListener('load',changeElementByHash);
+
 
